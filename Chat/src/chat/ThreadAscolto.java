@@ -8,6 +8,7 @@ package chat;
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
+import java.net.InetAddress;
 import java.net.SocketException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -18,13 +19,15 @@ import java.util.logging.Logger;
  */
 public class ThreadAscolto extends Thread {
 
-    public ThreadAscolto() {
+    private DatagramSocket server;
+
+    public ThreadAscolto() throws SocketException {
+        server = new DatagramSocket(12345);
     }
 
     @Override
     public void run() {
         while (true) {
-            DatagramSocket server = null;
             try {
                 server = new DatagramSocket(420);
             } catch (SocketException ex) {
@@ -38,12 +41,18 @@ public class ThreadAscolto extends Thread {
                 } catch (IOException ex) {
                     Logger.getLogger(ThreadAscolto.class.getName()).log(Level.SEVERE, null, ex);
                 }
-                byte[] dataReceived = packet.getData(); // copia del buffer dichiarato sopra
+                byte[] dataReceived = packet.getData();
                 String messaggioRicevuto = new String(dataReceived, 0, packet.getLength());
                 String res = messaggioRicevuto.trim();
                 int porta = packet.getPort();
-                String ip = packet.getAddress().toString();
-                Gestione.getInstance("").Connessione(res, porta, ip);
+                InetAddress ip = packet.getAddress();
+                try {
+                    Gestione.getInstance("", ip).Connessione(res, porta, ip);
+                } catch (SocketException ex) {
+                    Logger.getLogger(ThreadAscolto.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (IOException ex) {
+                    Logger.getLogger(ThreadAscolto.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         }
     }

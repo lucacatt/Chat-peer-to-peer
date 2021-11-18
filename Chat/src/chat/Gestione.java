@@ -5,6 +5,9 @@
  */
 package chat;
 
+import java.io.IOException;
+import java.net.InetAddress;
+import java.net.SocketException;
 import java.util.ArrayList;
 
 /**
@@ -15,34 +18,39 @@ public class Gestione {
 
     private static Gestione INSTANCE;
     private String nome;
-    private String ipDestinatario;
+    private InetAddress ipDestinatario;
     private ArrayList<String> connnessioniSospese;
     private int portaDestinatario;
     private boolean isConnesso;
 
-    private Gestione(String n) {
+    private Gestione(String n, InetAddress ip) throws SocketException {
         nome = n;
-        ipDestinatario = "";
+        ipDestinatario = null;
         connnessioniSospese = new ArrayList();
         isConnesso = false;
     }
 
-    public static Gestione getInstance(String n) {
+    public static Gestione getInstance(String n, InetAddress ip) throws SocketException {
         if (INSTANCE == null) {
-            INSTANCE = new Gestione(n);
+            INSTANCE = new Gestione(n, ip);
         }
         return INSTANCE;
     }
 
-    public synchronized void Connessione(String res, int porta, String ip) {
+    public synchronized void Connessione(String res, int porta, InetAddress ip) throws IOException {
         if (isConnesso) {
-            //thread invio occupato
+            Invio.Invia("n;", ip);
         } else {
             ipDestinatario = ip;
             portaDestinatario = porta;
             isConnesso = true;
-            //thread invio libero
+            Invio.Invia("y;", ip);
         }
 
     }
+
+    void Connetti() {
+        
+    }
+    
 }
