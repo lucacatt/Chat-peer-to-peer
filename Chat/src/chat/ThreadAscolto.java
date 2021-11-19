@@ -28,11 +28,6 @@ public class ThreadAscolto extends Thread {
     @Override
     public void run() {
         while (true) {
-            try {
-                server = new DatagramSocket(420);
-            } catch (SocketException ex) {
-                Logger.getLogger(ThreadAscolto.class.getName()).log(Level.SEVERE, null, ex);
-            }
             byte[] buffer = new byte[1500];
             DatagramPacket packet = new DatagramPacket(buffer, buffer.length);
             while (true) {
@@ -46,6 +41,7 @@ public class ThreadAscolto extends Thread {
                 String res = messaggioRicevuto.trim();
                 int porta = packet.getPort();
                 InetAddress ip = packet.getAddress();
+                System.out.println(ip.toString());
                 try {
                     Gestione.getInstance("", ip).Connessione(res, porta, ip);
                 } catch (SocketException ex) {
