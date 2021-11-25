@@ -43,8 +43,9 @@ public class ThreadAscolto extends Thread {
                             String messaggioRicevuto1 = new String(dataReceived1, 0, packet.getLength());
                             String res1 = messaggioRicevuto1.trim();
                             String[] fine = res1.split(";");
+                            System.out.println(res1);
                             if (fine[0].equals("m")) {
-                                Messaggi.getInstance().Aggiugi(fine[1]);
+                                Messaggi.getInstance(null).Aggiugi(Gestione.getInstance("", null).getNomeDestinatario() + " " + fine[1]);
                             } else if (fine[0].equals("c")) {
                                 Gestione.getInstance("", null).Disconnessione();
                             }
@@ -60,6 +61,7 @@ public class ThreadAscolto extends Thread {
                         System.out.println(ip.toString());
                         try {
                             Gestione.getInstance("", ip).Connessione(res, porta, ip);
+                            Gestione.getInstance("", ip).setIpDestinatario(ip);
                         } catch (SocketException ex) {
                             Logger.getLogger(ThreadAscolto.class.getName()).log(Level.SEVERE, null, ex);
                         } catch (IOException ex) {

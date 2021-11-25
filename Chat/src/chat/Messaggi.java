@@ -8,31 +8,38 @@ package chat;
 import java.net.InetAddress;
 import java.net.SocketException;
 import java.util.ArrayList;
+import javax.swing.JFrame;
 
 /**
  *
  * @author Luca Cattaneo
  */
 public class Messaggi {
-    
-    private ArrayList<String> Messaggi;
+
+    public ArrayList<String> Chat;
     private static Messaggi INSTANCE;
-    
-    private Messaggi() {
-        Messaggi = new ArrayList();
+    private JFrame frame;
+
+    private Messaggi(JFrame f) {
+        Chat = new ArrayList();
+        frame = f;
+
     }
-    
-    public static Messaggi getInstance() throws SocketException {
+
+    public static Messaggi getInstance(JFrame frame) throws SocketException {
         if (INSTANCE == null) {
-            INSTANCE = new Messaggi();
+            INSTANCE = new Messaggi(frame);
         }
         return INSTANCE;
     }
-    
-    public void Aggiugi(String mess) {
-        Messaggi.add(mess);
+
+    public synchronized void Aggiugi(String mess) {
+        Chat.add(mess);
+        frame.paint(frame.getGraphics());
     }
-    public void Disconnessione(){
-        Messaggi = new ArrayList();
+
+    public void Disconnessione() {
+        Chat = new ArrayList();
     }
+
 }

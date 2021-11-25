@@ -50,10 +50,12 @@ public class Gestione {
 
     public synchronized void Connessione(String res, int porta, InetAddress ip) throws IOException {
         if (Attesa) {
-            if (ipDestinatario.equals(ip)) {
+            String[] splitted = res.split(";");
+            if (ipDestinatario.equals(ip) && splitted[0].equals("y")) {
                 Attesa = false;
-                Invio.Invia("y;", ip);
                 Chatting = true;
+                nomeDestinatario = splitted[1];
+                Invio.Invia("y;", ip);
             } else {
                 Invio.Invia("n;", ip);
             }
@@ -71,7 +73,9 @@ public class Gestione {
                         nomeDestinatario = splitted[1];
                         Connesso = true;
                         Chatting = true;
+                        Attesa = false;
                         Invio.Invia("y;" + nome + ";", ip);
+                        System.out.println("connesso");
                     } else {
                         Invio.Invia("n;", ip);
                     }
@@ -105,6 +109,10 @@ public class Gestione {
 
     void Disconnessione() throws IOException {
         INSTANCE = new Gestione(nome, null);
+    }
+
+    public String getNomeDestinatario() {
+        return nomeDestinatario;
     }
 
 }
