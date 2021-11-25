@@ -36,14 +36,36 @@ public class ThreadAscolto extends Thread {
                 } catch (IOException ex) {
                     Logger.getLogger(ThreadAscolto.class.getName()).log(Level.SEVERE, null, ex);
                 }
-                byte[] dataReceived = packet.getData();
-                String messaggioRicevuto = new String(dataReceived, 0, packet.getLength());
-                String res = messaggioRicevuto.trim();
-                int porta = packet.getPort();
-                InetAddress ip = packet.getAddress();
-                System.out.println(ip.toString());
                 try {
-                    Gestione.getInstance("", ip).Connessione(res, porta, ip);
+                    if (Gestione.getInstance("", null).isChatting()) {
+                        if (Gestione.getInstance("", null).getIpDestinatario() == packet.getAddress()) {
+                            byte[] dataReceived1 = packet.getData();
+                            String messaggioRicevuto1 = new String(dataReceived1, 0, packet.getLength());
+                            String res1 = messaggioRicevuto1.trim();
+                            String[] fine = res1.split(";");
+                            if (fine[0].equals("m")) {
+                                Messaggi.getInstance().Aggiugi(fine[1]);
+                            } else if (fine[0].equals("c")) {
+                                Gestione.getInstance("", null).Disconnessione();
+                            }
+                        } else {
+                            Invio.Invia("c;", Gestione.getInstance("", null).getIpDestinatario());
+                        }
+                    } else {
+                        byte[] dataReceived = packet.getData();
+                        String messaggioRicevuto = new String(dataReceived, 0, packet.getLength());
+                        String res = messaggioRicevuto.trim();
+                        int porta = packet.getPort();
+                        InetAddress ip = packet.getAddress();
+                        System.out.println(ip.toString());
+                        try {
+                            Gestione.getInstance("", ip).Connessione(res, porta, ip);
+                        } catch (SocketException ex) {
+                            Logger.getLogger(ThreadAscolto.class.getName()).log(Level.SEVERE, null, ex);
+                        } catch (IOException ex) {
+                            Logger.getLogger(ThreadAscolto.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                    }
                 } catch (SocketException ex) {
                     Logger.getLogger(ThreadAscolto.class.getName()).log(Level.SEVERE, null, ex);
                 } catch (IOException ex) {

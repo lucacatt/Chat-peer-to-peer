@@ -14,17 +14,25 @@ import java.util.ArrayList;
  * @author Luca Cattaneo
  */
 public class Messaggi {
-
+    
     private ArrayList<String> Messaggi;
     private static Messaggi INSTANCE;
-
+    
     private Messaggi() {
         Messaggi = new ArrayList();
     }
+    
     public static Messaggi getInstance() throws SocketException {
         if (INSTANCE == null) {
             INSTANCE = new Messaggi();
         }
         return INSTANCE;
+    }
+    
+    public void Aggiugi(String mess) {
+        Messaggi.add(mess);
+    }
+    public void Disconnessione(){
+        Messaggi = new ArrayList();
     }
 }

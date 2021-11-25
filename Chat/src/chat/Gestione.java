@@ -23,16 +23,18 @@ public class Gestione {
     private InetAddress ipDestinatario;
     private ArrayList<String> connnessioniSospese;
     private int portaDestinatario;
-    private boolean isConnesso;
-    private boolean inAttesa;
+    private boolean Connesso;
+    private boolean Attesa;
+    private boolean Chatting;
 
     private Gestione(String n, InetAddress ip) throws SocketException {
         nome = n;
         ipDestinatario = ip;
         connnessioniSospese = new ArrayList();
-        isConnesso = false;
+        Connesso = false;
         nomeDestinatario = "";
-        inAttesa = false;
+        Attesa = false;
+        Chatting = false;
     }
 
     public static Gestione getInstance(String n, InetAddress ip) throws SocketException {
@@ -47,16 +49,16 @@ public class Gestione {
     }
 
     public synchronized void Connessione(String res, int porta, InetAddress ip) throws IOException {
-        if (inAttesa) {
+        if (Attesa) {
             if (ipDestinatario.equals(ip)) {
-                inAttesa = false;
+                Attesa = false;
                 Invio.Invia("y;", ip);
-            }
-            else{
+                Chatting = true;
+            } else {
                 Invio.Invia("n;", ip);
             }
         } else {
-            if (isConnesso) {
+            if (Connesso) {
                 Invio.Invia("n;", ip);
             } else {
                 String[] splitted = res.split(";");
@@ -67,7 +69,8 @@ public class Gestione {
                         ipDestinatario = ip;
                         portaDestinatario = porta;
                         nomeDestinatario = splitted[1];
-                        isConnesso = true;
+                        Connesso = true;
+                        Chatting = true;
                         Invio.Invia("y;" + nome + ";", ip);
                     } else {
                         Invio.Invia("n;", ip);
@@ -81,14 +84,27 @@ public class Gestione {
 
     }
 
+    public boolean isChatting() {
+        return Chatting;
+    }
+
+    public InetAddress getIpDestinatario() {
+        return ipDestinatario;
+    }
+
     void Connetti() throws IOException {
         Invio.Invia("a;" + nome + ";", ipDestinatario);
-        inAttesa = true;
+        Attesa = true;
     }
 
     void Disconnetti() throws IOException {
         Invio.Invia("c;", ipDestinatario);
-        isConnesso = false;
+        Connesso = false;
+        Chatting = false;
+    }
+
+    void Disconnessione() throws IOException {
+        INSTANCE = new Gestione(nome, null);
     }
 
 }
