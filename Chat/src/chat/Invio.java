@@ -23,7 +23,7 @@ public class Invio {
         byte[] responseBuffer = risposta.getBytes();
         DatagramPacket responsePacket = new DatagramPacket(responseBuffer, responseBuffer.length);
         responsePacket.setAddress(ip);
-        responsePacket.setPort(12346);
+        responsePacket.setPort(12345);
         server.send(responsePacket);
     }
 }
