@@ -103,8 +103,7 @@ public class Gestione {
 
     void Disconnetti() throws IOException {
         Invio.Invia("c;", ipDestinatario);
-        Connesso = false;
-        Chatting = false;
+        INSTANCE = new Gestione(nome, null);
     }
 
     void Disconnessione() throws IOException {

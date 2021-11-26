@@ -252,7 +252,7 @@ public class Frame extends javax.swing.JFrame {
                 } catch (SocketException ex) {
                     Logger.getLogger(Frame.class.getName()).log(Level.SEVERE, null, ex);
                 }
-                label.setBounds(70, y, 150, 20);//coordinate larg alt
+                label.setBounds(70, y, 150 + msg.length(), 20);//coordinate larg alt
                 label.setText(msg);
                 msgPannello.add(label);
                 msgPannello.setSize(msgPannello.getWidth(), h);
@@ -280,6 +280,7 @@ public class Frame extends javax.swing.JFrame {
         } catch (IOException ex) {
             Logger.getLogger(Frame.class.getName()).log(Level.SEVERE, null, ex);
         }
+        paint(this.getGraphics());
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void txtMessActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtMessActionPerformed
