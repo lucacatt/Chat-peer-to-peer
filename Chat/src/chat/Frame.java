@@ -248,7 +248,7 @@ public class Frame extends javax.swing.JFrame {
         try {
             if (Messaggi.getInstance(this).Chat.size() > 0) {
                 try {
-                    msg = Messaggi.getInstance(this).Chat.get(Messaggi.getInstance(this).Chat.size() - 1);
+                    msg = Messaggi.getInstance(this).getMsg();
                 } catch (SocketException ex) {
                     Logger.getLogger(Frame.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -280,7 +280,6 @@ public class Frame extends javax.swing.JFrame {
         } catch (IOException ex) {
             Logger.getLogger(Frame.class.getName()).log(Level.SEVERE, null, ex);
         }
-        paint(this.getGraphics());
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void txtMessActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtMessActionPerformed

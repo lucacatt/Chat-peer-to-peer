@@ -41,5 +41,7 @@ public class Messaggi {
     public void Disconnessione() {
         Chat = new ArrayList();
     }
-
+    public synchronized String getMsg(){
+        return Chat.get(Chat.size() - 1);
+    }
 }

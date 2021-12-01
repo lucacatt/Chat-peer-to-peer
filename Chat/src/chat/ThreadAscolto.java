@@ -22,7 +22,7 @@ public class ThreadAscolto extends Thread {
     private DatagramSocket server;
 
     public ThreadAscolto() throws SocketException {
-        server = new DatagramSocket(12345);
+        server = new DatagramSocket(12346);
     }
 
     @Override
