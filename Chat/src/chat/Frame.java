@@ -217,6 +217,7 @@ public class Frame extends javax.swing.JFrame {
             Logger.getLogger(Frame.class.getName()).log(Level.SEVERE, null, ex);
         }
         t.start();
+
         try {
             Gestione.getInstance(txtNome.getText(), null);
         } catch (SocketException ex) {

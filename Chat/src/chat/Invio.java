@@ -24,6 +24,7 @@ public class Invio {
         DatagramPacket responsePacket = new DatagramPacket(responseBuffer, responseBuffer.length);
         responsePacket.setAddress(ip);
         responsePacket.setPort(12345);
+        System.out.println(risposta);
         server.send(responsePacket);
     }
 }
